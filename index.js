@@ -20,3 +20,8 @@ client.on('messageCreate', message => {
 
 client.login(process.env.TOKEN);
 
+client.on('messageCreate', (message) => {
+  if (message.content === '!ping') {
+    message.reply('🏓 Pong!');
+  }
+});
