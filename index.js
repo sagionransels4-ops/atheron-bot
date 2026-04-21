@@ -89,3 +89,60 @@ client.on('interactionCreate', async (interaction) => {
     );
   }
 });
+const sesiones = {};
+
+const preguntas = [
+"¿Experiencia como staff?",
+"¿Has moderado antes?",
+"¿Cuántas horas estás activo?",
+"¿Cómo manejas conflictos?",
+"¿Qué haces ante spam?",
+"¿Tienes experiencia en Discord?",
+"¿Sabes usar comandos básicos?",
+"¿Cómo tratas usuarios problemáticos?",
+"¿Por qué quieres ser staff?",
+"¿Qué harías si otro staff falla?",
+"¿Cómo reaccionas bajo presión?",
+"¿Has sido staff antes?",
+"¿Cómo manejas insultos?",
+"¿Qué harías con un hacker?",client.on('messageCreate', async (message) => {
+  if (message.content === '!formulario') {
+
+    sesiones[message.author.id] = {
+      paso: 0,
+      respuestas: []
+    };
+
+    message.channel.send("📋 Iniciando formulario de staff...");
+    message.channel.send(preguntas[0]);
+  }
+});
+
+client.on('messageCreate', async (message) => {
+
+  const sesion = sesiones[message.author.id];
+  if (!sesion) return;
+
+  sesion.respuestas.push(message.content);
+  sesion.paso++;
+
+  if (sesion.paso < preguntas.length) {
+    message.channel.send(preguntas[sesion.paso]);
+  } else {
+
+    const canalStaff = message.guild.channels.cache.find(c => c.name === "revision-staff");
+
+    canalStaff.send(
+      "📋 NUEVA POSTULACIÓN STAFF\n\n" +
+      sesion.respuestas.map((r, i) => `Q${i+1}: ${r}`).join("\n") +
+      "\n\n⚠️ Pendiente de revisión"
+    );
+
+    message.channel.send("📨 Tu formulario fue enviado al staff.");
+
+    delete sesiones[message.author.id];
+  }
+});
+"¿Algo más que quieras añadir?"
+];
+
