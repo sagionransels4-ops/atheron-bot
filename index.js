@@ -56,3 +56,54 @@ client.on('interactionCreate', async (interaction) => {
     interaction.user.send("📋 Empezamos tu formulario de staff. (Próximo paso: preguntas)");
   }
 });
+
+const sesiones = {};
+
+const preguntas = [
+"¿Experiencia como staff?",
+"¿Has moderado antes?",
+"¿Cuántas horas estás activo?",
+"¿Cómo manejas conflictos?",
+"¿Qué harías si alguien insulta?",
+"¿Tienes experiencia en Discord?",
+"¿Sabes usar comandos básicos?",
+"¿Cómo actuarías con spam?",
+"¿Por qué quieres ser staff?",
+"¿Cómo manejas presión?"
+];
+
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  if (interaction.customId === 'iniciar_form') {
+
+    const user = interaction.user;
+
+    sesiones[user.id] = {
+      paso: 0,
+      respuestas: []
+    };
+
+    await interaction.reply({ content: "📩 Formulario iniciado en privado", ephemeral: true });
+
+    user.send("📋 Empezando formulario...");
+    user.send(preguntas[0]);
+  }
+});
+
+client.on('messageCreate', async (message) => {
+
+  if (message.guild) return; // solo DM
+
+  const sesion = sesiones[message.author.id];
+  if (!sesion) return;
+
+  sesion.respuestas.push(message.content);
+  sesion.paso++;
+
+  if (sesion.paso < preguntas.length) {
+    message.author.send(preguntas[sesion.paso]);
+  } else {
+    message.author.send("📋 Formulario terminado. (próximo paso: enviar/cancelar)");
+  }
+});
