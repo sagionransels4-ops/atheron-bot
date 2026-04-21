@@ -146,3 +146,4 @@ client.on('messageCreate', async (message) => {
 "¿Algo más que quieras añadir?"
 ];
 
+const canalStaff = message.guild.channels.cache.find(c => c.name === "𝐒𝐭𝐚𝐟𝐟-𝐫𝐞𝐜𝐥𝐮𝐭𝐚𝐦𝐢𝐞𝐧𝐭𝐨");
