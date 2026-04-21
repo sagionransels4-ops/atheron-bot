@@ -46,19 +46,6 @@ client.on('messageCreate', async (message) => {
   }
 });
 
-client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isButton()) return;
-
-  if (interaction.customId === 'iniciar_form') {
-
-    await interaction.reply({ content: "📩 Revisa tu privado", ephemeral: true });
-
-    interaction.user.send("📋 Empezamos tu formulario de staff. (Próximo paso: preguntas)");
-  }
-});
-
-const sesiones = {};
-
 const preguntas = [
 "¿Experiencia como staff?",
 "¿Has moderado antes?",
