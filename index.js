@@ -26,3 +26,33 @@ client.on('messageCreate', (message) => {
   }
 });
 
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
+client.on('messageCreate', async (message) => {
+  if (message.content === '!formulario') {
+
+    const row = new ActionRowBuilder()
+      .addComponents(
+        new ButtonBuilder()
+          .setCustomId('iniciar_form')
+          .setLabel('🟢 Iniciar formulario')
+          .setStyle(ButtonStyle.Success)
+      );
+
+    message.channel.send({
+      content: "📋 Formulario de staff listo",
+      components: [row]
+    });
+  }
+});
+
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  if (interaction.customId === 'iniciar_form') {
+
+    await interaction.reply({ content: "📩 Revisa tu privado", ephemeral: true });
+
+    interaction.user.send("📋 Empezamos tu formulario de staff. (Próximo paso: preguntas)");
+  }
+});
